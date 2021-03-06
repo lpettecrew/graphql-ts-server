@@ -1,5 +1,4 @@
 import { ResolverMap } from "../../types/graphql-utils";
-import * as bcrypt from "bcryptjs";
 import * as yup from "yup";
 import { User } from "../../entity/User";
 import { formatYupError } from "../../utils/formatYupError";
@@ -40,12 +39,11 @@ export const resolvers: ResolverMap = {
         ];
       }
 
-      const hashedPass = await bcrypt.hash(password, 10);
       const user = User.create({
         firstName,
         lastName,
         email,
-        password: hashedPass,
+        password,
       });
 
       await user.save();

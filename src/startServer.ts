@@ -47,12 +47,20 @@ export const startServer = async () => {
 
   server.express.get("/confirm/:id", confirmEmail);
 
+  server.express.get("/logout", (req, res) => {
+    req.session.destroy((err) => {
+      console.log(err);
+      res.clearCookie("qid", { path: "/" });
+      res.redirect("/");
+    });
+  });
+
   await createTypeormConn();
   const app = await server.start({
     cors,
     port: process.env.NODE_ENV === "test" ? 0 : 4000,
   });
-  console.log("Server is running on localhost:4000");
+  console.log("Server is running on http://localhost:4000");
 
   return app;
 };
